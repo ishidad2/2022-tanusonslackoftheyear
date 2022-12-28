@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Metal on Symbol</title>
+</head>
+<body>
+
+  <div class="px-4 py-5 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8">
+    <div class="relative flex items-center justify-between">
+      <div class="flex items-center">
+        <div aria-label="Company" title="Company" class="inline-flex items-center mr-8">
+          <svg class="w-8 text-light-blue-accent-400" viewBox="0 0 24 24" stroke-linejoin="round" stroke-width="2" stroke-linecap="round" stroke-miterlimit="10" stroke="currentColor" fill="none">
+            <rect x="3" y="1" width="7" height="12"></rect>
+            <rect x="3" y="17" width="7" height="6"></rect>
+            <rect x="14" y="1" width="7" height="6"></rect>
+            <rect x="14" y="11" width="7" height="12"></rect>
+          </svg>
+          <span class="ml-2 text-xl font-bold tracking-wide text-gray-800 uppercase">2022タヌソンSlackオブザイヤー</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="px-4 py-16 mx-auto sm:max-w-xl md:max-w-full lg:max-w-screen-xl md:px-24 lg:px-8 lg:py-20">
+    <div class="max-w-2xl mx-auto sm:max-w-xl md:max-w-2xl">
+      <div class="mb-5 ">
+        <div class="flex items-center border-b border-teal-500 py-2">
+          <input id="metalid" class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none" type="text" placeholder="Metal id" aria-label="Full name" value="FeCxk79CW5f72MCUrTkaTwX2XZVCee3c8HnTF9v2ahCUf6">
+          <button class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded" type="button" onclick="loadImage()">
+            Fetch
+          </button>
+        </div>
+      </div>
+      <pre class="mb-3 bg-slate-100 p-3">
+  --- Summary of Forging (Receipt) ---
+  Metal ID: FeCxk79CW5f72MCUrTkaTwX2XZVCee3c8HnTF9v2ahCUf6
+  Type: Account
+  Source Account Address: NBRO6CZUDEEKBP4ABTAA7657VJGORP5J4KWW7VY
+  Target Account Address: NBRO6CZUDEEKBP4ABTAA7657VJGORP5J4KWW7VY
+  Metadata Key: 3726CB3AC5328C66
+  Additive: 0000
+  Data size: 67021 bytes
+  # of Aggregate TXs: 1
+  TX Fee: 2.4902 XYM
+  Signer Address: NBRO6CZUDEEKBP4ABTAA7657VJGORP5J4KWW7VY
+  Network Type: 104
+      </pre>
+      <div class="flex flex-wrap justify-center">
+        <div id="loading" class="flex justify-center">
+          <div class="animate-spin h-8 w-8 bg-blue-300 rounded-xl mb-3"></div>
+        </div>
+        <div id="uploadImageArea"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="./metal-on-symbol-0.2.2.js"></script>
+  <script src="./symbol-sdk-2.0.3.js"></script>
+  <script>
+    const metal = require("/node_modules/metal-on-symbol");
+    $('#loading').hide();
+
+    const ss = new metal.SymbolService({
+      node_url: "https://symbol-mikun.net:3001",
+      repo_factory_config:{
+        websocketUrl:"wss://symbol-mikun.net:3001/ws",
+        websocketInjected:WebSocket
+      }
+    });
+
+    const ms = new metal.MetalService(ss);
+
+    async function loadImage() {
+      $('#loading').show();
+      const element = document.getElementById('metalid');
+      const data = await ms.fetchByMetalId (element.value); 
+      const imgblob = new Blob([data.payload],{type:"image/png"});
+      fileUrl = URL.createObjectURL(imgblob) ;
+      document.querySelector('#uploadImageArea').innerHTML = `<img src="${fileUrl}" class="p-1 bg-white border rounded max-w-sm max-w-full h-auto rounded-lg" />`;
+      $('#loading').hide();
+    }
+  </script>
+</body>
+</html>
