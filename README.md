@@ -1,5 +1,5 @@
-https://github.com/OPENSPHERE-Inc/metal-on-symbol
-https://qiita.com/nem_takanobu/items/75baac0c6efa17814db6
+- https://github.com/OPENSPHERE-Inc/metal-on-symbol
+- https://qiita.com/nem_takanobu/items/75baac0c6efa17814db6
 
 ```
   --- Summary of Forging (Receipt) ---
